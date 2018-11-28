@@ -1,16 +1,23 @@
 var u, x, imagelist;
-var isFirstTime=true;
+var isFirstTime = true;
+var optionDomList;
 var golIndex = Math.floor(Math.random() * (4 - 1)) + 1;
+var positions = [
+    { x: 0, y: 0 },
+    { x: 0, y: 0 },
+    { x: 0, y: 0 }
+]
 window.onload = function () {
     initMatch();
 }
 function initMatch() {
+
     imagelist = document.getElementsByClassName("aimg");
     x = document.getElementsByClassName("golimg");
     u = document.getElementsByClassName("underimg");
+    optionDomList = document.getElementsByClassName("option-wrapper");
     initResult();
-
-
+    setPosition();
 }
 function initResult() {
     for (let i = 0; i < 3; i++) {
@@ -22,9 +29,9 @@ function initResult() {
         }
         imagelist[i].addEventListener("click", function (event) {
 
-            if(isFirstTime){
+            if (isFirstTime) {
                 showResult(i);
-            isFirstTime=false;
+                isFirstTime = false;
             }
 
 
@@ -34,32 +41,96 @@ function initResult() {
 
 function showResult(clickedItemIndex) {
 
-        switch (clickedItemIndex) {
+    switch (clickedItemIndex) {
+        case 0:
+            u[0].style.display = "block";
+            // u[0].classList.add("show");
+            break;
+        case 1:
+            u[1].style.display = "block";
+            // u[1].classList.add("show");
+            break;
+        case 2:
+            u[2].style.display = "block";
+        // u[2].classList.add("show");
+    }
+    document.getElementById("aimg1").classList.add("--upper");
+    document.getElementById("aimg2").classList.add("--upper");
+    document.getElementById("aimg3").classList.add("--upper");
+}
+function gameStart() {
+    document.getElementById("aimg1").classList.remove("--upper");
+    document.getElementById("aimg2").classList.remove("--upper");
+    document.getElementById("aimg3").classList.remove("--upper");
+    jabeja();
+
+}
+function swap() {
+    var img1 = document.getElementById("p1");
+    var img2 = document.getElementById("p2");
+}
+function setPosition() {
+    var height = document.body.clientHeight;
+    var width = document.body.clientWidth;
+    positions[0].x = (width / 2) - 300;
+    positions[0].y = (height / 2) - 50;
+    optionDomList[0].style.top = positions[0].y + "px";
+    optionDomList[0].style.left = positions[0].x + "px";
+    positions[1].x = (width / 2) - 50;
+    positions[1].y = (height / 2) - 50;
+    optionDomList[1].style.top = positions[1].y + "px";
+    optionDomList[1].style.left = positions[1].x + "px";
+    positions[2].x = (width / 2) + 200;
+    positions[2].y = (height / 2) - 50;
+    optionDomList[2].style.top = positions[2].y + "px";
+    optionDomList[2].style.left = positions[2].x + "px";
+}
+function swap(index1, index2, ) {
+
+    var distance = positions[index2].x - positions[index1].x;
+    optionDomList[index1].style.top = positions[index2].y + 100 + "px";
+    optionDomList[index1].style.left = positions[index2].x - 125 + "px";
+    optionDomList[index2].style.top = positions[index1].y - 100 + "px";
+    optionDomList[index2].style.left = positions[index1].x + 130 + "px";
+    setTimeout(function () {
+
+        optionDomList[index1].style.top = positions[index2].y + "px";
+        optionDomList[index1].style.left = positions[index2].x + "px";
+        optionDomList[index2].style.top = positions[index1].y + "px";
+        optionDomList[index2].style.left = positions[index1].x + "px";
+        setTimeout(function () {
+             var item1 = optionDomList[index1].cloneNode(true);
+             var item2 = optionDomList[index2].cloneNode(true);
+             optionDomList[index1].parentNode.replaceChild(item2,optionDomList[index1]) ;
+             optionDomList[index2].parentNode.replaceChild(item1,optionDomList[index2]) ;
+
+        }, 250);
+    }, 250);
+
+
+}
+function jabeja() {
+    var i = 0;
+    var interval = setInterval(function () {
+        var poko = Math.floor(Math.random() * (4 - 1)) + 1;
+        switch (poko) {
             case 0:
-                u[0].style.display = "block";
-                // u[0].classList.add("show");
+                setTimeout(function () { swap(1, 2) }, 750);
                 break;
             case 1:
-                u[1].style.display = "block";
-                // u[1].classList.add("show");
+                setTimeout(function () { swap(0, 2) }, 750);
                 break;
             case 2:
-                u[2].style.display = "block";
-            // u[2].classList.add("show");
+                setTimeout(function () { swap(0, 1) }, 750);
         }
-        document.getElementById("aimg1").classList.add("--upper");
-        document.getElementById("aimg2").classList.add("--upper");
-        document.getElementById("aimg3").classList.add("--upper");
 
+        i++;
+        if (i == 30) {
+            clearInterval(interval);
+        }
+    }, 1000);
+    
 
-
-
-    }
-function gameStart(){
-        document.getElementById("aimg1").classList.remove("--upper");
-        document.getElementById("aimg2").classList.remove("--upper");
-        document.getElementById("aimg3").classList.remove("--upper");
-        
 }
 
 
