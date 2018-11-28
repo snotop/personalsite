@@ -1,6 +1,7 @@
 var u, x, imagelist;
 var isFirstTime = true;
 var optionDomList;
+var startonce = true;
 var golIndex = Math.floor(Math.random() * (4 - 1)) + 1;
 var positions = [
     { x: 0, y: 0 },
@@ -59,10 +60,15 @@ function showResult(clickedItemIndex) {
     document.getElementById("aimg3").classList.add("--upper");
 }
 function gameStart() {
-    document.getElementById("aimg1").classList.remove("--upper");
-    document.getElementById("aimg2").classList.remove("--upper");
-    document.getElementById("aimg3").classList.remove("--upper");
-    jabeja();
+
+    if (startonce) {
+        document.getElementById("aimg1").classList.remove("--upper");
+        document.getElementById("aimg2").classList.remove("--upper");
+        document.getElementById("aimg3").classList.remove("--upper");
+        jabeja();
+        startonce = false;
+    }
+
 
 }
 function swap() {
@@ -99,10 +105,10 @@ function swap(index1, index2, ) {
         optionDomList[index2].style.top = positions[index1].y + "px";
         optionDomList[index2].style.left = positions[index1].x + "px";
         setTimeout(function () {
-             var item1 = optionDomList[index1].cloneNode(true);
-             var item2 = optionDomList[index2].cloneNode(true);
-             optionDomList[index1].parentNode.replaceChild(item2,optionDomList[index1]) ;
-             optionDomList[index2].parentNode.replaceChild(item1,optionDomList[index2]) ;
+            var item1 = optionDomList[index1].cloneNode(true);
+            var item2 = optionDomList[index2].cloneNode(true);
+            optionDomList[index1].parentNode.replaceChild(item2, optionDomList[index1]);
+            optionDomList[index2].parentNode.replaceChild(item1, optionDomList[index2]);
 
         }, 250);
     }, 250);
@@ -112,24 +118,31 @@ function swap(index1, index2, ) {
 function jabeja() {
     var i = 0;
     var interval = setInterval(function () {
+        console.log(i);
         var poko = Math.floor(Math.random() * (4 - 1)) + 1;
         switch (poko) {
             case 0:
-                setTimeout(function () { swap(1, 2) }, 750);
+                setTimeout(function () { swap(1, 2) }, 500);
                 break;
             case 1:
-                setTimeout(function () { swap(0, 2) }, 750);
+                setTimeout(function () { swap(0, 2) }, 500);
                 break;
             case 2:
-                setTimeout(function () { swap(0, 1) }, 750);
+                setTimeout(function () { swap(0, 1) }, 500);
         }
 
         i++;
-        if (i == 30) {
+
+        if (i == 5) {
             clearInterval(interval);
+
+            setTimeout(function () {
+                alert("goool");
+
+            }, 1000);
         }
-    }, 1000);
-    
+    }, 600);
+
 
 }
 
